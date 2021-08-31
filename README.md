@@ -1,4 +1,4 @@
-# Chemprop, why?
+# Chemexp
 
 A Chemprop explainer based on ![LIME](https://github.com/marcotcr/lime) and ![PathExplain](https://github.com/suinleelab/path_explain).
 
