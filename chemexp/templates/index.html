@@ -1,0 +1,150 @@
+<html>
+<head>
+    <title>Antibio explanation</title>
+    <link rel="icon" href="{{url_for('static', filename='pill.png')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <link rel="stylesheet" href="static/selectbox.css">
+</head>
+
+<header>
+    <center>
+        <a href="/"><img id="logo" src="{{url_for('static', filename='pill.png')}}" /></a>
+    </center>
+</header>
+
+<body>
+    <center>
+      <input type="text" id="smiles" name="smiles" placeholder="Enter a SMILES to explain...">
+      <div style="position: relative; width: 640px; height: 64px;">
+          <div style="width: 320px; left: 16px; position: absolute; margin: 32px;">
+          {% set default_i = 0 %}
+          {% for name, contentlist in [("model", models)] %}
+              {% include "selectbox.html" %}
+          {% endfor %}
+          </div>
+          <button class="cbutton" onclick="display();">Display</button>
+      </div>
+    </center>
+
+    <center id="preview"></center>
+    <center id="response"></center>
+</body>
+
+<div style="height: 250px;"></div>
+
+<footer>
+    <img id="foot" src="{{url_for('static', filename='footer2.svg')}}" />
+    <div class="footer">
+        <div class="footer-subdiv">
+        <b>Orpailleur 2021</b><br>
+        Fabien BERNIER • Clément BELLANGER • Bernard MAIGRET • Amedeo NAPOLI
+        </div>
+        <div class="footer-subdiv">
+        </div>
+    </div>
+</footer>
+
+<script>
+    const logo = document.getElementById("logo");
+    const inputmol = document.getElementById("smiles");
+    const preview = document.querySelector("#preview");
+    const content = document.querySelector("#response");
+
+    inputmol.addEventListener("keyup", function(event) {
+      if (event.keyCode === 13) {
+        display();
+      }
+    });
+
+    function toggle_loading(b) {
+        if (b) {
+            content.innerHTML = '<span class="wait">Explaining...</span>';
+            logo.style.animation = "loading 1.5s cubic-bezier(.68,-0.55,.27,1.55) infinite";
+        } else {
+            logo.style.animation = "";
+        }
+    }
+
+    function toggle_interactions_loading(b) {
+        var interactions = document.getElementById("interactions");
+        if (b) {
+            interactions.innerHTML = '<span class="wait">Explaining...</span>';
+            logo.style.animation = "loading 1.5s cubic-bezier(.68,-0.55,.27,1.55) infinite";
+        } else {
+            logo.style.animation = "";
+        }
+    }
+
+    function get_selected(listName) {
+        var parent = document.getElementById("select-box__value-" + listName)
+        for (let i = 0; i < parent.childElementCount; i++) {
+            var x = parent.children[i].getElementsByClassName("select-box__input")[0]
+            if (x.checked) return i;
+        }
+        return -1;
+    }
+
+    async function display() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/display', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+        xhr.onload = function(e) {
+            if(xhr.readyState === XMLHttpRequest.DONE) {
+                toggle_loading(false);
+                preview.innerHTML = xhr.response;
+            }
+        };
+        xhr.send("smiles="+encodeURIComponent(inputmol.value) + "&model="+get_selected("model"));
+    }
+
+    async function refresh(classNb, details) {
+        toggle_loading(true);
+        if (details === undefined) {
+            details = {
+                smiles: inputmol.value
+            };
+        }
+        var query = "smiles=" + encodeURIComponent(details.smiles)
+                  + "&model=" + get_selected("model")
+                  + "&exp=" + get_selected("exp")
+                  + "&class=" + classNb;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/explain', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+        xhr.onload = function(e) {
+            if(xhr.readyState === XMLHttpRequest.DONE) {
+                toggle_loading(false);
+                content.innerHTML = xhr.response;
+            }
+        };
+        xhr.send(query);
+    }
+
+    async function explain_interactions(mol, classNb) {
+        toggle_interactions_loading(true);
+
+        var query = "smiles=" + encodeURIComponent(mol)
+                  + "&model=" + get_selected("model")
+                  + "&feature1=" + get_selected("feature1")
+                  + "&feature2=" + get_selected("feature2")
+                  + "&class="+classNb;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/interactions', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+        var interactions = document.getElementById("interactions");
+
+        xhr.onload = function(e) {
+            if(xhr.readyState === XMLHttpRequest.DONE) {
+                toggle_interactions_loading(false);
+                interactions.innerHTML = xhr.response;
+            }
+        };
+        xhr.send(query);
+    }
+</script>
+</html>

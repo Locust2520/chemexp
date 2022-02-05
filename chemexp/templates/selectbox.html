@@ -1,0 +1,17 @@
+                <div class="select-box__current" id="select-box__current-{{ name }}" tabindex="1">
+                  <div class="select-box__value" id="select-box__value-{{ name }}">
+                    {% for i, text in contentlist %}
+                      <div class="select-box__value">
+                        <input class="select-box__input" type="radio" id="{{name}}{{ i }}" value="{{ i }}" name="{{name}}" {% if i == default_i %}checked="checked"{% endif %}/>
+                        <p class="select-box__input-text">{{ text }}</p>
+                      </div>
+                    {% endfor %}
+                  </div><img class="select-box__icon" src="{{url_for('static', filename='arrow.svg')}}" alt="arrow icon" aria-hidden="true"/>
+                </div>
+                <ul class="select-box__list" id="select-box__list-{{ name }}">
+                  {% for i, text in contentlist %}
+                    <li>
+                      <label class="select-box__option" for="{{name}}{{ i }}" aria-hidden="aria-hidden">{{ text }}</label>
+                    </li>
+                  {% endfor %}
+                </ul>

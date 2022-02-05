@@ -1,0 +1,70 @@
+<style>
+{% for i in range(n_predictions) %}
+    #class{{ i }} {
+        background: rgb{{ predcolors[i] }};
+        {% if predictions[i] > 0.5 %} color: white {% endif %};
+    }
+
+    #class{{ i }} td {
+        transition: 0s;
+    }
+
+    #class{{ i }}:hover {
+        cursor: pointer;
+        background: #679aec;
+        color: white;
+    }
+{% endfor %}
+</style>
+
+<center style="display: inline-flex;">
+    <img src="/static/tmp/mols/{{ mol_md5 }}.png" width="512" height="288" />
+
+    <div>
+
+        <span>Choose your <b>explainer</b>:</span>
+        <div style="height: 48px; margin: 8px;">
+        {% set default_i = 0 %}
+        {% for name, contentlist in [("exp", explainers)] %}
+            {% include "selectbox.html" %}
+        {% endfor %}
+        </div>
+
+        <table class="explanation-table">
+            <tr>
+                <th colspan="2" style="border-radius: 5px 5px 0 0">
+                    Select a class to explain
+                </th>
+            </tr>
+            {% for i in range(n_predictions) %}
+            <tr id="class{{ i }}" onclick="refresh( {{ i }} )">
+                <td class="lcolumn">
+                    {{ i }}
+                </td>
+                <td>
+                    {{ predictions[i] }}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <table class="explanation-table toptable">
+        <tr>
+            <td class="lcolumn">
+                # atoms
+            </td>
+            <td>
+                {{ n_atoms }}
+            </td>
+        </tr>
+        <tr>
+            <td class="lcolumn">
+                # bonds
+            </td>
+            <td>
+                {{ n_bonds }}
+            </td>
+        </tr>
+    </table>
+</center>

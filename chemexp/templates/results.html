@@ -1,0 +1,89 @@
+{% set atoms_features = [
+   (0, "atom_type"),
+   (1, "#bonds"),
+   (2, "formal_charge"),
+   (3, "chirality"),
+   (4, "#Hs"),
+   (5, "hybridization"),
+   (6, "aromaticity"),
+   (7, "atomic_mass")
+] %}
+
+{% set bonds_features = [
+   (0, "bond_type"),
+   (1, "conjugated"),
+   (2, "in_ring"),
+   (3, "stereo")
+] %}
+
+{% if explainer == "path_explain" %}
+    <h2 style="font-family: 'Roboto', sans-serif;">Attributions</h2>
+{% endif %}
+<span>Explanations of class n°<b>{{ classNb }}</b></span>
+
+<table class="explanation-table">
+    <tr>
+        <th colspan="4" style="border-radius: 5px 5px 0 0">
+            Atoms contributions
+        </th>
+    </tr>
+    {% for k in range(2) %}
+    <tr>
+        {% for i in range(4*k, 4*(k+1)) %}
+            <td class="cell">
+                <center style="display: grid">
+                <a href="/{{ path }}/exp_atom_{{ i }}.png" target="_blank" rel="noopener noreferrer"><img class="molecule" src="/{{ path }}/exp_atom_{{ i }}.png" /></a>
+                <span>Feature {{ i }}: <b>{{ atoms_features[i][1] }}</b></span>
+                </center>
+            </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
+<table class="explanation-table">
+    <tr>
+        <th colspan="4" style="border-radius: 5px 5px 0 0">
+            Bonds contributions
+        </th>
+    </tr>
+    {% for k in range(1) %}
+    <tr>
+        {% for i in range(4*k, 4*(k+1)) %}
+            <td class="cell">
+                <center style="display: grid">
+                <a href="/{{ path }}/exp_bond_{{ i }}.png" target="_blank" rel="noopener noreferrer"><img class="molecule" src="/{{ path }}/exp_bond_{{ i }}.png" /></a>
+                <span>Feature {{ i }}: <b>{{ bonds_features[i][1] }}</b></span>
+                </center>
+            </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
+<i style="font-size: 12px;">colormap</i><br>
+<span style="font-size: 12px;">{{ -bound }} </span><img src="/static/colormap.png" style="width: 400px;" /><span style="font-size: 12px;"> {{ bound }}</span>
+
+{% if explainer == "path_explain" %}
+    <h2 style="font-family: 'Roboto', sans-serif; margin: 64px;">Interactions</h2>
+
+    <div style="position: relative; width: max-content; display: inline-flex;">
+        <span>Explain interactions between</span>
+        <div class="featureslist">
+            {% set default_i = 0 %}
+            {% for name, contentlist in [("feature1", atoms_features)] %}
+                {% include "selectbox.html" %}
+            {% endfor %}
+        </div>
+        <span>and</span>
+        <div class="featureslist">
+            {% set default_i = 5 %}
+            {% for name, contentlist in [("feature2", atoms_features)] %}
+                {% include "selectbox.html" %}
+            {% endfor %}
+        </div>
+        <button class="cbutton interactbutton" onclick="explain_interactions('{{ mol }}', {{ classNb }});" style="z-index: 2;">Explain</button>
+    </div>
+
+    <div id="interactions" style="position: relative; min-height: 256px;"></div>
+{% endif %}

@@ -153,10 +153,11 @@ def mol_to_png(mol, filename: str, size=(1200, 675), use_color=False):
     except:
         mol = None
     if mol is None:
+        cd = "/".join(__file__.split("/")[:-1])
         if size[0]/size[1] < 1.4:
-            shutil.copyfile("static/smiles_error.png", filename)
+            shutil.copyfile(cd + "/static/smiles_error.png", filename)
         else:
-            shutil.copyfile("static/smiles_error_rect.png", filename)
+            shutil.copyfile(cd + "/static/smiles_error_rect.png", filename)
     else:
         # draw the molecule with RDKit
         d = rdMolDraw2D.MolDraw2DCairo(*size)

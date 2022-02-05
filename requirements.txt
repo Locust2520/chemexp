@@ -2,4 +2,5 @@ matplotlib
 lime
 torch
 tqdm
+flask
 chemprop

@@ -1,18 +1,16 @@
+import pathlib
 from distutils.core import setup
 
-readme = ""
-try:
-  with open("README.md", 'r') as f:
-    readme = f.read()
-except:
-  pass
+
+HERE = pathlib.Path(__file__).parent
+README = (HERE / "README.md").read_text()
 
 setup(
   name = "chemexp",
   packages = ["chemexp"],
-  version = "0.2",
+  version = "0.2.2",
   description = "An explainer for Chemprop based on LIME and PathExplain.",
-  long_description = readme,
+  long_description = README,
   long_description_content_type = "text/markdown",
   author = "Fabien BERNIER",
   author_email = "fabien.bernier@telecomnancy.net",
@@ -27,5 +25,8 @@ setup(
     "deep learning",
     "graph"
   ],
-  classifiers = [],
+  classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8"
+  ],
 )

@@ -1,3 +1,8 @@
 __pycache__/
 chemexp/__pycache__/
 dist/
+.idea/
+build/
+chemexp.egg-info/
+images/
+models/
