@@ -8,7 +8,8 @@ README = (HERE / "README.md").read_text()
 setup(
   name = "chemexp",
   packages = ["chemexp"],
-  version = "0.2.2",
+  package_data={"chemexp": ["static/*", "templates/*"]},
+  version = "0.2.4",
   description = "An explainer for Chemprop based on LIME and PathExplain.",
   long_description = README,
   long_description_content_type = "text/markdown",

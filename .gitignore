@@ -5,3 +5,5 @@ dist/
 build/
 chemexp.egg-info/
 models/
+MANIFEST
+setup.cfg
