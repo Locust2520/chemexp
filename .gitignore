@@ -4,5 +4,4 @@ dist/
 .idea/
 build/
 chemexp.egg-info/
-images/
 models/
