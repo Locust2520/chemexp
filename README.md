@@ -4,7 +4,20 @@ A Chemprop explainer based on [LIME](https://github.com/marcotcr/lime) and [Path
 
 ![](images/exp_atom_0.png) ![](images/exp_bond_2.png)
 
-## Installation
+
+## Introduction 💊
+
+**[Chemprop](https://github.com/chemprop/chemprop)** is the implementation of message passing neural networks for molecular property prediction and classification.  
+
+**Chemexp** (this repo) is built on top of Chemprop in order to explain *why* a classification has been made.
+We are then able to visualize the importance of structures or properties inside the molecule, w.r.t. the classification.  
+Chemexp is therefore a way to visualize *what has been learned* from Chemprop.
+
+This project has been done as part of my end-of-study internship in the [Orpailleur](https://orpailleur.loria.fr/) team (LORIA, Nancy, France).  
+It has been applied in the discovery of key properties of molecules that provide them antibiotic behaviors. ([read more](https://hal.inria.fr/hal-03371070))
+
+
+## Installation 🖥️
 
 - Make sure your Python version is >= **3.8**
 - `conda` is required for ChemProp. If it is not installed on your machine, you can take a look at [miniconda](https://docs.conda.io/en/latest/miniconda.html)
@@ -13,9 +26,10 @@ A Chemprop explainer based on [LIME](https://github.com/marcotcr/lime) and [Path
 2. Then simply run `pip install chemexp`
 3. You're good to go!
 
-## Explanation
 
-### Using Python
+## Explanation 🔎
+
+### Using Python 🐍
 
 ```python
 import chemexp
@@ -28,7 +42,7 @@ chemexp.exp_to_png(exp, "mol.png")
 
 A little more detail is available in [test/test.py](test/test.py).
 
-### Web interface
+### Web interface 🐧
 
 ![](images/screenshot.png)
 
@@ -44,7 +58,7 @@ python -m chemexp <path>
 where `path` is a folder containing chemprop models / checkpoints (.pt files)
 
 
-## Authors
+## Authors 👥
 - BELLANGER Clément
 - [BERNIER Fabien](https://wwwfr.uni.lu/snt/people/fabien_bernier)
 - MAIGRET Bernard
